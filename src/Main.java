@@ -7,18 +7,18 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
-    // JDBC URL, username, password của cơ sở dữ liệu MySQL
-    static final String JDBC_URL = "jdbc:mysql://localhost:3306/sinhvien";
+
+    static final String JDBC_URL = "jdbc:mysql://localhost:3306/thigk2";
     static final String USERNAME = "root";
     static final String PASSWORD = "";
 
     public static void main(String[] args) {
         try {
-            // Kết nối cơ sở dữ liệu
+
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
             System.out.println("Connected to database.");
 
-            // Hiển thị menu
+
             while (true) {
                 System.out.println("Choose an option:");
                 System.out.println("1. Hiển thị tất cả nhân viên");
@@ -53,21 +53,21 @@ public class Main {
                         break;
                     case 6:
                         int employeeCount = countEmployees(connection);
-                        System.out.println("Total number of employees: " + employeeCount);
+                        System.out.println("Tong so nhan vien la: " + employeeCount);
                         break;
                     case 7:
                         // Đóng kết nối và thoát khỏi chương trình
                         connection.close();
-                        System.out.println("Disconnected from database.");
+                        System.out.println("Dong ket noi.");
                         System.exit(0);
                     case 8:
                         importEmployeesFromFile(connection);
-                        System.out.println("Complete!");
+                        System.out.println("hoan thanh!");
                     case 9:
                         exportEmployeesToFile(connection);
-                        System.out.println("Complete!");
+                        System.out.println("Hoan thanh!");
                     default:
-                        System.out.println("Invalid option. Please choose again.");
+                        System.out.println("Chon lai!");
                         break;
                 }
             }
@@ -76,7 +76,6 @@ public class Main {
         }
     }
 
-    // Hiển thị thông tin của tất cả nhân viên từ cơ sở dữ liệu
     static void displayAllEmployees(Connection connection) throws SQLException {
         String sql = "SELECT * FROM employees";
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -106,7 +105,7 @@ public class Main {
         statement.close();
     }
 
-    // Thêm một nhân viên vào cơ sở dữ liệu
+
     static void addEmployee(Connection connection) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter employee ID:");
@@ -202,7 +201,7 @@ public class Main {
         System.out.println("Employee added to database.");
     }
 
-    // Sửa thông tin của một nhân viên trong cơ sở dữ liệu
+
     static void updateEmployee(Connection connection) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter employee ID to update:");
@@ -218,7 +217,6 @@ public class Main {
         System.out.println("Employee updated in database.");
     }
 
-    // Hiển thị thông tin của một nhân viên từ cơ sở dữ liệu
     static void displayEmployee(Connection connection) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter employee ID to display:");
@@ -252,7 +250,6 @@ public class Main {
         statement.close();
     }
 
-    // Xóa một nhân viên từ cơ sở dữ liệu
     static void deleteEmployee(Connection connection) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter employee ID to delete:");
@@ -265,7 +262,6 @@ public class Main {
         System.out.println("Employee deleted from database.");
     }
 
-    // Đếm số lượng nhân viên trong cơ sở dữ liệu
     static int countEmployees(Connection connection) throws SQLException {
         String sql = "SELECT COUNT(*) AS count FROM employees";
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -279,7 +275,7 @@ public class Main {
         return count;
     }
 
-    // Ghi thông tin của tất cả nhân viên vào file
+
     static void exportEmployeesToFile(Connection connection) throws SQLException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("test.txt"))) {
             String sql = "SELECT * FROM employees";
@@ -303,15 +299,12 @@ public class Main {
         System.out.println("Employees exported to file.");
     }
 
-    // Đọc thông tin của nhân viên từ file và thêm vào cơ sở dữ liệu
     static void importEmployeesFromFile(Connection connection) {
         try (BufferedReader reader = new BufferedReader(new FileReader("test.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                // Create Employee object from parts and add to database
-                // Example: Employee employee = new Employee(parts[0], parts[1], ...)
-                // addEmployeeToDatabase(connection, employee);
+
             }
         } catch (IOException e) {
             e.printStackTrace();
