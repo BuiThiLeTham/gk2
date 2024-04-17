@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<students>
+    <student>
+        <id>001</id>
+        <name>Bui Thi Le Tham</name>
+        <address>Đà Nẵng</address>
+        <dateOfBirth>2005-10-10</dateOfBirth>
+    </student>
+    <student>
+        <id>002</id>
+        <name>Nguyen Minh Duy</name>
+        <address>Quang Tri</address>
+        <dateOfBirth>2005-11-11</dateOfBirth>
+    </student>
+    <student>
+        <id>003</id>
+        <name>Nguyen Thi Diem Quynh</name>
+        <address>Hue</address>
+        <dateOfBirth>2005-22-02</dateOfBirth>
+    </student>
+    <student>
+        <id>004</id>
+        <name>Ho Ngoc Thao Vy</name>
+        <address>TP HO CHI MINH</address>
+        <dateOfBirth>2005-17-01</dateOfBirth>
+    </student>
+    <!-- more students -->
+</students>

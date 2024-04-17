@@ -8,9 +8,9 @@ import java.util.Scanner;
 
 public class Main {
 
-    static final String JDBC_URL = "jdbc:mysql://localhost:3306/thigk2";
+    static final String JDBC_URL = "jdbc:mysql://localhost:3306/sinhvien";
     static final String USERNAME = "root";
-    static final String PASSWORD = "";
+    static final String PASSWORD = "buithithanhngan2011";
 
     public static void main(String[] args) {
         try {
