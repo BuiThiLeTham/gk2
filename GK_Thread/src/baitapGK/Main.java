@@ -100,37 +100,41 @@ class Luong3 implements Runnable {
             doc.appendChild(root);
 
             for (SinhVien sinhVien : sinhViens) {
-                Element studentElement = doc.createElement("student");
+                Element studentElement = createElementWithTextContent(doc, "student", "");
                 root.appendChild(studentElement);
 
-                Element idElement = doc.createElement("id");
-                idElement.setTextContent(Integer.toString(sinhVien.maSV));
-                studentElement.appendChild(idElement);
-
-                Element nameElement = doc.createElement("name");
-                nameElement.setTextContent(sinhVien.ten);
-                studentElement.appendChild(nameElement);
-
-                Element addressElement = doc.createElement("address");
-                addressElement.setTextContent(sinhVien.diaChi);
-                studentElement.appendChild(addressElement);
-
-                Element ageElement = doc.createElement("age");
-                ageElement.setTextContent(Integer.toString(sinhVien.tuoi));
-                studentElement.appendChild(ageElement);
+                addElementWithTextContent(doc, studentElement, "id", Integer.toString(sinhVien.maSV));
+                addElementWithTextContent(doc, studentElement, "name", sinhVien.ten);
+                addElementWithTextContent(doc, studentElement, "address", sinhVien.diaChi);
+                addElementWithTextContent(doc, studentElement, "age", Integer.toString(sinhVien.tuoi));
             }
 
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("./src/baitapGK/kq.xml"));
-
-            transformer.transform(source, result);
+            writeXMLToFile(doc, "./src/baitapGK/kq.xml");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    private Element createElementWithTextContent(Document doc, String tagName, String textContent) {
+        Element element = doc.createElement(tagName);
+        element.setTextContent(textContent);
+        return element;
+    }
+
+    private void addElementWithTextContent(Document doc, Element parentElement, String tagName, String textContent) {
+        Element element = createElementWithTextContent(doc, tagName, textContent);
+        parentElement.appendChild(element);
+    }
+
+    private void writeXMLToFile(Document doc, String filePath) throws Exception {
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+        StreamResult result = new StreamResult(new File(filePath));
+        transformer.transform(source, result);
+    }
+
 }
 
 public class Main {
