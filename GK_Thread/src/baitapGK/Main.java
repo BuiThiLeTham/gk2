@@ -12,29 +12,29 @@ import java.security.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-class Student {
-    int id;
-    String name;
-    String address;
-    String dateOfBirth;
-    int age;
+class SinhVien {
+    int maSV;
+    String ten;
+    String diaChi;
+    String ngaySinh;
+    int tuoi;
 
-    public Student(int id, String name, String address, String dateOfBirth) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.dateOfBirth = dateOfBirth;
+    public SinhVien(int maSV, String ten, String diaChi, String ngaySinh) {
+        this.maSV = maSV;
+        this.ten = ten;
+        this.diaChi = diaChi;
+        this.ngaySinh = ngaySinh;
     }
     public String getInfo() {
-        return "ID: " + id + ", Name: " + name + ", Address: " + address + ", Age: " + age;
+        return "Mã SV: " + maSV + ", Tên: " + ten + ", Địa chỉ: " + diaChi + ", Tuổi: " + tuoi;
     }
 }
 
-class Thread1 implements Runnable {
-    List<Student> students;
+class Luong1 implements Runnable {
+    List<SinhVien> sinhViens;
 
-    public Thread1(List<Student> students) {
-        this.students = students;
+    public Luong1(List<SinhVien> sinhViens) {
+        this.sinhViens = sinhViens;
     }
 
     public void run() {
@@ -49,11 +49,11 @@ class Thread1 implements Runnable {
                 if (studentNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element studentElement = (Element) studentNode;
 
-                    int id = Integer.parseInt(studentElement.getElementsByTagName("id").item(0).getTextContent());
-                    String name = studentElement.getElementsByTagName("name").item(0).getTextContent();
-                    String address = studentElement.getElementsByTagName("address").item(0).getTextContent();
-                    String dateOfBirth = studentElement.getElementsByTagName("dateOfBirth").item(0).getTextContent();
-                    students.add(new Student(id, name, address, dateOfBirth));
+                    int maSV = Integer.parseInt(studentElement.getElementsByTagName("id").item(0).getTextContent());
+                    String ten = studentElement.getElementsByTagName("name").item(0).getTextContent();
+                    String diaChi = studentElement.getElementsByTagName("address").item(0).getTextContent();
+                    String ngaySinh = studentElement.getElementsByTagName("dateOfBirth").item(0).getTextContent();
+                    sinhViens.add(new SinhVien(maSV, ten, diaChi, ngaySinh));
                 }
             }
         } catch (Exception e) {
@@ -62,32 +62,32 @@ class Thread1 implements Runnable {
     }
 }
 
-class Thread2 implements Runnable {
-    List<Student> students;
+class Luong2 implements Runnable {
+    List<SinhVien> sinhViens;
 
-    public Thread2(List<Student> students) {
-        this.students = students;
+    public Luong2(List<SinhVien> sinhViens) {
+        this.sinhViens = sinhViens;
     }
 
     public void run() {
-        for (Student student : students) {
-            Calendar dob = Calendar.getInstance();
+        for (SinhVien sinhVien : sinhViens) {
+            Calendar ngaySinh = Calendar.getInstance();
             try {
-                dob.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(student.dateOfBirth));
+                ngaySinh.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(sinhVien.ngaySinh));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            int age = Calendar.getInstance().get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-            student.age = age;
+            int tuoi = Calendar.getInstance().get(Calendar.YEAR) - ngaySinh.get(Calendar.YEAR);
+            sinhVien.tuoi = tuoi;
         }
     }
 }
 
-class Thread3 implements Runnable {
-    List<Student> students;
+class Luong3 implements Runnable {
+    List<SinhVien> sinhViens;
 
-    public Thread3(List<Student> students) {
-        this.students = students;
+    public Luong3(List<SinhVien> sinhViens) {
+        this.sinhViens = sinhViens;
     }
 
     public void run() {
@@ -99,24 +99,24 @@ class Thread3 implements Runnable {
             Element root = doc.createElement("students");
             doc.appendChild(root);
 
-            for (Student student : students) {
+            for (SinhVien sinhVien : sinhViens) {
                 Element studentElement = doc.createElement("student");
                 root.appendChild(studentElement);
 
                 Element idElement = doc.createElement("id");
-                idElement.setTextContent(Integer.toString(student.id));
+                idElement.setTextContent(Integer.toString(sinhVien.maSV));
                 studentElement.appendChild(idElement);
 
                 Element nameElement = doc.createElement("name");
-                nameElement.setTextContent(student.name);
+                nameElement.setTextContent(sinhVien.ten);
                 studentElement.appendChild(nameElement);
 
                 Element addressElement = doc.createElement("address");
-                addressElement.setTextContent(student.address);
+                addressElement.setTextContent(sinhVien.diaChi);
                 studentElement.appendChild(addressElement);
 
                 Element ageElement = doc.createElement("age");
-                ageElement.setTextContent(Integer.toString(student.age));
+                ageElement.setTextContent(Integer.toString(sinhVien.tuoi));
                 studentElement.appendChild(ageElement);
             }
 
@@ -135,10 +135,10 @@ class Thread3 implements Runnable {
 
 public class Main {
     public static void main(String[] args) {
-        List<Student> students = new ArrayList<>();
-        Thread t1 = new Thread(new Thread1(students));
-        Thread t2 = new Thread(new Thread2(students));
-        Thread t3 = new Thread(new Thread3(students));
+        List<SinhVien> sinhViens = new ArrayList<>();
+        Thread t1 = new Thread(new Luong1(sinhViens));
+        Thread t2 = new Thread(new Luong2(sinhViens));
+        Thread t3 = new Thread(new Luong3(sinhViens));
 
         t1.start();
         try {
@@ -162,8 +162,8 @@ public class Main {
         }
 
 
-        for (Student student : students) {
-            System.out.println(student.getInfo());
+        for (SinhVien sinhVien : sinhViens) {
+            System.out.println(sinhVien.getInfo());
         }
     }
 }
