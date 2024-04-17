@@ -1,5 +1,4 @@
 package baitapGK;
-
 import java.io.*;
 import java.util.*;
 import javax.xml.parsers.*;
@@ -12,7 +11,6 @@ import org.w3c.dom.*;
 import java.security.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.math.BigInteger;
 
 class Student {
     int id;
@@ -20,14 +18,15 @@ class Student {
     String address;
     String dateOfBirth;
     int age;
-    int sum;
-    boolean isDigit;
 
     public Student(int id, String name, String address, String dateOfBirth) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.dateOfBirth = dateOfBirth;
+    }
+    public String getInfo() {
+        return "ID: " + id + ", Name: " + name + ", Address: " + address + ", Age: " + age;
     }
 }
 
@@ -79,52 +78,15 @@ class Thread2 implements Runnable {
                 e.printStackTrace();
             }
             int age = Calendar.getInstance().get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-
-            MessageDigest md = null;
-            try {
-                md = MessageDigest.getInstance("SHA-256");
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
-            byte[] encodedAge = md.digest(Integer.toString(age).getBytes());
-
             student.age = age;
-            student.isDigit = true;
-            // Kiểm tra tính chất của tuổi và tính tổng các chữ số trong năm sinh đã được bỏ qua
         }
     }
 }
-
 
 class Thread3 implements Runnable {
     List<Student> students;
 
     public Thread3(List<Student> students) {
-        this.students = students;
-    }
-
-    public void run() {
-        for (Student student : students) {
-            boolean isPrime = true;
-            for (int i = 2; i <= Math.sqrt(student.sum); i++) {
-                if (student.sum % i == 0) {
-                    isPrime = false;
-                    break;
-                }
-            }
-            if (isPrime) {
-                System.out.println("ID: " + student.id + " Name: " + student.name + " Address: " + student.address + " Age: " + student.age );
-            } else {
-                System.out.println("ID: " + student.id + " Name: " + student.name + " Address: " + student.address + " Age: " + student.age );
-            }
-        }
-    }
-}
-
-class Thread4 implements Runnable {
-    List<Student> students;
-
-    public Thread4(List<Student> students) {
         this.students = students;
     }
 
@@ -156,14 +118,6 @@ class Thread4 implements Runnable {
                 Element ageElement = doc.createElement("age");
                 ageElement.setTextContent(Integer.toString(student.age));
                 studentElement.appendChild(ageElement);
-
-                Element sumElement = doc.createElement("sum");
-                sumElement.setTextContent(Integer.toString(student.sum));
-                studentElement.appendChild(sumElement);
-
-                Element isDigitElement = doc.createElement("isDigit");
-                isDigitElement.setTextContent(Boolean.toString(student.isDigit));
-                studentElement.appendChild(isDigitElement);
             }
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -178,13 +132,13 @@ class Thread4 implements Runnable {
         }
     }
 }
+
 public class Main {
     public static void main(String[] args) {
         List<Student> students = new ArrayList<>();
         Thread t1 = new Thread(new Thread1(students));
         Thread t2 = new Thread(new Thread2(students));
         Thread t3 = new Thread(new Thread3(students));
-        Thread t4 = new Thread(new Thread4(students));
 
         t1.start();
         try {
@@ -204,10 +158,12 @@ public class Main {
         try {
             t3.join();
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        t4.start();
+
+        for (Student student : students) {
+            System.out.println(student.getInfo());
+        }
     }
 }
